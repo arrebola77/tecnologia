@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="es" class="h-full m-0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Comparativo Tarjetas 2025 - YAM</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+    <style>
+      body { margin: 0; display: flex; overflow: hidden; background-color: #f8f9fa; color: #1a1a1a; font-family: system-ui, sans-serif; height: 100vh; }
+      .bento-card {
+        background-color: #ffffff;
+        border: 1px solid #e1dfdd;
+        border-radius: 0.75rem;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      }
+      .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+      .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+      .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+      
+      @media (max-width: 768px) {
+        body { flex-direction: column; }
+        .desktop-nav { display: none; }
+        .mobile-nav-container { display: flex; flex-direction: row; overflow-x: auto; white-space: nowrap; border-bottom: 1px solid #e1dfdd; overflow-y: hidden;}
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="w-full md:w-64 bg-white border-b md:border-b-0 md:border-r border-[#e1dfdd] flex flex-col shrink-0 z-10 transition-all">
+      <div class="p-4 md:p-6 border-b border-[#e1dfdd] bg-[#0056b3]">
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 bg-white rounded-md flex items-center justify-center font-bold text-[#0056b3]">YAM</div>
+          <span class="text-white font-semibold text-sm leading-tight">Yo Aprendo a mi Manera</span>
+        </div>
+      </div>
+      <div class="mobile-nav-container md:flex md:flex-col flex-1 p-0 md:py-4 md:px-0">
+        <div class="hidden md:block px-4 py-2 text-[10px] uppercase tracking-widest text-[#5a5a5a] font-bold mb-2">Menú Principal</div>
+        
+        <a href="#" onclick="showSection('resumen')" id="nav-resumen" class="flex items-center gap-2 md:gap-3 px-4 md:px-6 py-3 md:py-3 bg-[#f0f7ff] text-[#0056b3] md:border-r-4 border-b-4 md:border-b-0 border-[#0056b3] font-medium shrink-0">
+          <span class="material-symbols-outlined text-[18px] md:text-[20px]">dashboard</span> Resumen
+        </a>
+        <a href="#" onclick="showSection('tarjetas')" id="nav-tarjetas" class="flex items-center gap-2 md:gap-3 px-4 md:px-6 py-3 md:py-3 text-[#5a5a5a] border-transparent hover:bg-gray-50 transition-colors shrink-0 md:border-r-4 border-b-4 md:border-b-0">
+          <span class="material-symbols-outlined text-[18px] md:text-[20px]">credit_card</span> Tarjetas
+        </a>
+        <a href="#" onclick="showSection('tabla')" id="nav-tabla" class="flex items-center gap-2 md:gap-3 px-4 md:px-6 py-3 md:py-3 text-[#5a5a5a] border-transparent hover:bg-gray-50 transition-colors shrink-0 md:border-r-4 border-b-4 md:border-b-0">
+          <span class="material-symbols-outlined text-[18px] md:text-[20px]">table_chart</span> Comparativa
+        </a>
+        <a href="#" onclick="showSection('recomendaciones')" id="nav-recomendaciones" class="flex items-center gap-2 md:gap-3 px-4 md:px-6 py-3 md:py-3 text-[#5a5a5a] border-transparent hover:bg-gray-50 transition-colors shrink-0 md:border-r-4 border-b-4 md:border-b-0">
+          <span class="material-symbols-outlined text-[18px] md:text-[20px]">recommend</span> Recomendaciones
+        </a>
+        <a href="#" onclick="showSection('quiz')" id="nav-quiz" class="flex items-center gap-2 md:gap-3 px-4 md:px-6 py-3 md:py-3 text-[#5a5a5a] border-transparent hover:bg-gray-50 transition-colors shrink-0 md:border-r-4 border-b-4 md:border-b-0">
+          <span class="material-symbols-outlined text-[18px] md:text-[20px]">quiz</span> Quiz Final
+        </a>
+      </div>
+    </nav>
+
+    <main class="flex-1 flex flex-col h-full overflow-hidden relative">
+      <header class="h-14 md:h-16 bg-white border-b border-[#e1dfdd] flex items-center justify-between px-4 md:px-6 shrink-0">
+        <div class="flex items-center gap-2 text-xs md:text-sm">
+          <span class="text-[#5a5a5a]">Finanzas</span>
+          <span class="text-[#5a5a5a]">/</span>
+          <span class="text-[#0056b3] font-semibold" id="header-title">Resumen y Top 5</span>
+        </div>
+      </header>
+
+      <div class="flex-1 overflow-y-auto custom-scrollbar p-4 md:p-8">
+        
+        <!-- SEC: RESUMEN -->
+        <div id="sec-resumen" class="grid grid-cols-1 md:grid-cols-12 gap-6 max-w-6xl mx-auto">
+          <div class="md:col-span-8 bento-card bg-[#0056b3] border-none text-white relative overflow-hidden p-6 md:p-8">
+            <div class="relative z-10">
+              <span class="bg-white/20 text-[10px] uppercase font-bold px-2 py-1 rounded tracking-wide">Reporte Agosto 2025</span>
+              <h1 class="text-2xl md:text-3xl font-bold mt-3 leading-tight">Comparativas de Tarjetas de Crédito de México</h1>
+              <p class="mt-3 text-white/80 max-w-xl text-sm md:text-base leading-relaxed">
+                Análisis exhaustivo sobre opciones sin anualidad, niveles de cashback directo, bancos tradicionales frente a fintech y oportunidades con meses sin intereses.
+              </p>
+              <button onclick="showSection('tarjetas')" class="mt-5 bg-white text-[#0056b3] px-6 py-2 rounded-lg font-bold text-sm shadow-md transition-transform hover:scale-105 active:scale-95">Ir a Tarjetas</button>
+            </div>
+            <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-white/10 rounded-full blur-3xl pointer-events-none"></div>
+          </div>
+          <div class="md:col-span-4 bento-card p-6 flex flex-col justify-center">
+            <h3 class="text-[#1a1a1a] font-bold text-sm flex items-center gap-2 mb-4">
+              <span class="material-symbols-outlined text-[#0056b3]">insights</span> Hallazgos Clave
+            </h3>
+            <ul class="space-y-4 text-xs md:text-sm text-[#5a5a5a]">
+              <li class="flex items-start gap-2">
+                <span class="material-symbols-outlined text-green-600 text-[18px]">check_circle</span>
+                <span>Las <strong>Fintech</strong> ofrecen el mayor nivel de cashback (hasta 3% general).</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="material-symbols-outlined text-green-600 text-[18px]">check_circle</span>
+                <span>La <strong>anualidad $0</strong> se bonifica usualmente si se cumple consumo mensual.</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="material-symbols-outlined text-[#0056b3] text-[18px]">info</span>
+                <span>Beneficios en "Puntos" tradicionales resultan ser menores vs efectivo líquido.</span>
+              </li>
+            </ul>
+          </div>
+          <div class="md:col-span-12 font-bold text-lg mt-2 border-b border-[#e1dfdd] pb-2 text-[#1a1a1a]">Shortlist - Top 5 Tarjetas</div>
+          
+          <div class="md:col-span-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="bento-card border-t-4 border-t-[#8a05be] p-5">
+              <div class="flex justify-between items-start mb-2">
+                <h3 class="font-bold text-[#1a1a1a]">1. Nu (Nubank)</h3>
+                <span class="bg-purple-100 text-purple-800 text-[10px] font-bold px-2 py-1 rounded">3% Efectivo</span>
+              </div>
+              <p class="text-xs text-[#5a5a5a] mb-4">Recomendación máxima hoy en día para cashback con el programa Nu+, libre de comisiones y buena app.</p>
+              <div class="text-[11px] bg-[#dff6dd] border border-[#107c10] text-[#107c10] p-2 rounded mb-2 font-medium">Pros: 1 punto = $0.10. Recompensas fluidas.</div>
+              <div class="text-[11px] bg-[#fde7e9] border border-[#a4262c] text-[#a4262c] p-2 rounded font-medium">Contras: Depende de no variar futuras reglas.</div>
+            </div>
+            <div class="bento-card border-t-4 border-t-[#ff441f] p-5">
+              <div class="flex justify-between items-start mb-2">
+                <h3 class="font-bold text-[#1a1a1a]">2. RappiCard</h3>
+                <span class="bg-orange-100 text-orange-800 text-[10px] font-bold px-2 py-1 rounded">Ecommerce</span>
+              </div>
+              <p class="text-xs text-[#5a5a5a] mb-4">Cashback fijo directo estado cuenta de hasta el 3% en su propia app. Completamente exenta de cuotas cambio FX.</p>
+              <div class="text-[11px] bg-[#dff6dd] border border-[#107c10] text-[#107c10] p-2 rounded mb-2 font-medium">Pros: Cashback automático. Ideal para dólares.</div>
+              <div class="text-[11px] bg-[#fde7e9] border border-[#a4262c] text-[#a4262c] p-2 rounded font-medium">Contras: Uso máximo atado a pedir en Rappi.</div>
+            </div>
+            <div class="bento-card border-t-4 border-t-[#ec0000] p-5">
+              <div class="flex justify-between items-start mb-2">
+                <h3 class="font-bold text-[#1a1a1a]">3. Santander LikeU</h3>
+                <span class="bg-red-100 text-red-800 text-[10px] font-bold px-2 py-1 rounded">Flexibilidad</span>
+              </div>
+              <p class="text-xs text-[#5a5a5a] mb-4">El usuario elige el cashback preferido (Hasta 6% farmacias, 5% comida). Te lo abonan directamente a banco.</p>
+              <div class="text-[11px] bg-[#dff6dd] border border-[#107c10] text-[#107c10] p-2 rounded mb-2 font-medium">Pros: Porcentajes altos concentrados por rubro.</div>
+              <div class="text-[11px] bg-[#fde7e9] border border-[#a4262c] text-[#a4262c] p-2 rounded font-medium">Contras: Tope de retornos es $500/mes.</div>
+            </div>
+            <div class="bento-card border-t-4 border-t-[#004481] p-5">
+              <div class="flex justify-between items-start mb-2">
+                <h3 class="font-bold text-[#1a1a1a]">4. BBVA Azul</h3>
+                <span class="bg-blue-100 text-blue-800 text-[10px] font-bold px-2 py-1 rounded">MSI Aliados</span>
+              </div>
+              <p class="text-xs text-[#5a5a5a] mb-4">Tarjeta general $0 cuota anual sacandola online. Muy fuerte por comercios en MSI. Tasa en Puntos del 9%.</p>
+              <div class="text-[11px] bg-[#dff6dd] border border-[#107c10] text-[#107c10] p-2 rounded mb-2 font-medium">Pros: Extrema amplia gama de cajeros e ingresos.</div>
+              <div class="text-[11px] bg-[#fde7e9] border border-[#a4262c] text-[#a4262c] p-2 rounded font-medium">Contras: 9% vale sólo 0.9% real al usar puntos.</div>
+            </div>
+            <div class="bento-card border-t-4 border-t-[#00529b] p-5">
+              <div class="flex justify-between items-start mb-2">
+                <h3 class="font-bold text-[#1a1a1a]">5. Costco Citi</h3>
+                <span class="bg-sky-100 text-sky-800 text-[10px] font-bold px-2 py-1 rounded">Reembolso Local</span>
+              </div>
+              <p class="text-xs text-[#5a5a5a] mb-4">Brutal 3% local pero anclada a la caja anual de Costco en Diciembre. Precio descuento como contado.</p>
+              <div class="text-[11px] bg-[#dff6dd] border border-[#107c10] text-[#107c10] p-2 rounded mb-2 font-medium">Pros: Rendimiento agresivo para shoppers fijos.</div>
+              <div class="text-[11px] bg-[#fde7e9] border border-[#a4262c] text-[#a4262c] p-2 rounded font-medium">Contras: Pagarás 522+IVA y el cash no es de uso libre.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SEC: TARJETAS -->
+        <div id="sec-tarjetas" class="hidden grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+          <!-- Nu -->
+          <div class="bento-card p-6 flex flex-col h-full">
+            <h3 class="text-lg font-bold">Nu (Nubank)</h3>
+            <p class="text-[#5a5a5a] text-xs mb-4">Sin anualidad • 3% Cashback Nu+ • Flexibilidad Plazos</p>
+            <div class="flex-1 mt-2 text-sm text-[#1a1a1a] bg-gray-50 p-4 border border-[#e1dfdd] rounded-lg">
+              <ul class="list-disc pl-4 space-y-1">
+                <li>3% real en puntos canjeables (Nu+)</li>
+                <li>App líder ultra intuitiva</li>
+                <li>0% comisión compras exterior</li>
+                <li class="text-[#a4262c]">Líneas inician bajas ($5k)</li>
+              </ul>
+            </div>
+          </div>
+          <!-- RappiCard -->
+          <div class="bento-card p-6 flex flex-col h-full">
+            <h3 class="text-lg font-bold">RappiCard (Banorte)</h3>
+            <p class="text-[#5a5a5a] text-xs mb-4">Sin anualidad • 3/2/1% Cashback escalado • MSI Variados</p>
+            <div class="flex-1 mt-2 text-sm text-[#1a1a1a] bg-gray-50 p-4 border border-[#e1dfdd] rounded-lg">
+              <ul class="list-disc pl-4 space-y-1">
+                <li>3% comida, 2% online y vuelos</li>
+                <li>Cashback 100% líquido corte a corte</li>
+                <li>Excelente cambio internacional sin comisiones</li>
+                <li class="text-[#a4262c]">Comisión 6% al sacar efectivo</li>
+              </ul>
+            </div>
+          </div>
+          <!-- LikeU -->
+          <div class="bento-card p-6 flex flex-col h-full">
+            <h3 class="text-lg font-bold">Santander LikeU</h3>
+            <p class="text-[#5a5a5a] text-xs mb-4">Sin anualidad • Hasta 6% Personalizado Cashback</p>
+            <div class="flex-1 mt-2 text-sm text-[#1a1a1a] bg-gray-50 p-4 border border-[#e1dfdd] rounded-lg">
+              <ul class="list-disc pl-4 space-y-1">
+                <li>6% en Farmacias / 5% Restaurantes / 4% Telecom</li>
+                <li>Depósito mensual automático propio banco</li>
+                <li class="text-[#a4262c]">Requiere cuenta Santander conectada y habilitar el Cashback Baby</li>
+              </ul>
+            </div>
+          </div>
+          <!-- BBVA -->
+          <div class="bento-card p-6 flex flex-col h-full">
+            <h3 class="text-lg font-bold">BBVA Azul Digital</h3>
+            <p class="text-[#5a5a5a] text-xs mb-4">$0 anualidad web • 9% Puntos • 3 MSI Welcome</p>
+            <div class="flex-1 mt-2 text-sm text-[#1a1a1a] bg-gray-50 p-4 border border-[#e1dfdd] rounded-lg">
+              <ul class="list-disc pl-4 space-y-1">
+                <li>9% equivale a 0.9% real de compras</li>
+                <li>Meses iniciales libres la hacen popular en altas compras estacionales</li>
+                <li class="text-[#a4262c]">Cobran ~$490 de mora si fallas</li>
+              </ul>
+            </div>
+          </div>
+          <!-- Banorte One Up -->
+          <div class="bento-card p-6 flex flex-col h-full">
+            <h3 class="text-lg font-bold">Banorte One Up</h3>
+            <p class="text-[#5a5a5a] text-xs mb-4">Cuota bonificada 7.5k trim • Pts x3 por Comunidad</p>
+            <div class="flex-1 mt-2 text-sm text-[#1a1a1a] bg-gray-50 p-4 border border-[#e1dfdd] rounded-lg">
+              <ul class="list-disc pl-4 space-y-1">
+                <li>Puntos multiplicados en Gamer, Wellness, Lifestyle</li>
+                <li>Cobertura de compras y Seguro robos gratis</li>
+                <li class="text-[#a4262c]">Rigor duro ante la inactividad</li>
+              </ul>
+            </div>
+          </div>
+          <!-- Scotiabank y otras -->
+          <div class="bento-card p-6 flex flex-col h-full">
+            <h3 class="text-lg font-bold">Scotiabank IDEAL</h3>
+            <p class="text-[#5a5a5a] text-xs mb-4">Cero anualidad • Arquitectura modular por pago</p>
+            <div class="flex-1 mt-2 text-sm text-[#1a1a1a] bg-gray-50 p-4 border border-[#e1dfdd] rounded-lg">
+              <ul class="list-disc pl-4 space-y-1">
+                <li>Armas la tarjeta. $0 base</li>
+                <li>Agregas Puntos (0.56%) por anualidad</li>
+                <li>Agregas MSI liberables por semestre</li>
+                <li class="text-[#a4262c]">Beneficios dispersos de pago</li>
+              </ul>
+            </div>
+          </div>
+          <div class="bento-card p-6 flex flex-col h-full">
+            <h3 class="text-lg font-bold">HSBC Zero</h3>
+            <p class="text-[#5a5a5a] text-xs mb-4">Sin cuota ($1 mes) • Reducción fees extracciones</p>
+            <div class="flex-1 mt-2 text-sm text-[#1a1a1a] bg-gray-50 p-4 border border-[#e1dfdd] rounded-lg">
+              <ul class="list-disc pl-4 space-y-1">
+                <li>0% de comisión (al sacar plásticos en cajero, único en mercado)</li>
+                <li>Bono: vuelo comercial $18K</li>
+                <li class="text-[#a4262c]">Le falta esquema Cashback fiel</li>
+              </ul>
+            </div>
+          </div>
+          <div class="bento-card p-6 flex flex-col h-full">
+            <h3 class="text-lg font-bold">Mercado Pago</h3>
+            <p class="text-[#5a5a5a] text-xs mb-4">Invitación MP • Meses cautivos</p>
+            <div class="flex-1 mt-2 text-sm text-[#1a1a1a] bg-gray-50 p-4 border border-[#e1dfdd] rounded-lg">
+              <ul class="list-disc pl-4 space-y-1">
+                <li>Hasta 2% siendo nivel 6 en la app</li>
+                <li>6 MSI inamovibles en MercadoLibre</li>
+                <li class="text-[#a4262c]">Uso ajeno al ecosistema irrelevante</li>
+              </ul>
+            </div>
+          </div>
+          <div class="bento-card p-6 flex flex-col h-full">
+            <h3 class="text-lg font-bold">Stori (Clásica/Black)</h3>
+            <p class="text-[#5a5a5a] text-xs mb-4">100% Accesibilidad Buró • 1% Cashback</p>
+            <div class="flex-1 mt-2 text-sm text-[#1a1a1a] bg-gray-50 p-4 border border-[#e1dfdd] rounded-lg">
+              <ul class="list-disc pl-4 space-y-1">
+                <li>El producto con mayor aprobación en primerizos</li>
+                <li>La versión Black provee 1% mensual</li>
+                <li class="text-[#a4262c]">CATs y Tasas asfixiantes si usas cuota</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- SEC: TABLA -->
+        <div id="sec-tabla" class="hidden flex-col gap-6 max-w-6xl mx-auto min-h-full">
+          <div class="bento-card overflow-hidden p-0 flex flex-col relative w-full">
+            <div class="bg-[#2a2d33] text-white p-4 font-bold text-sm tracking-wide shrink-0">
+              Matriz Comparativa Ejecutiva
+            </div>
+            <div class="overflow-x-auto w-full custom-scrollbar">
+              <table class="w-full text-left text-xs whitespace-nowrap">
+                <thead class="bg-gray-50 border-b border-[#e1dfdd] text-[#1a1a1a]">
+                  <tr>
+                    <th class="p-4 font-bold uppercase">Tarjeta</th>
+                    <th class="p-4 font-bold uppercase">Anualidad</th>
+                    <th class="p-4 font-bold uppercase">Rewards / Cashback</th>
+                    <th class="p-4 font-bold uppercase">Comisión FX</th>
+                    <th class="p-4 font-bold uppercase text-[#a4262c]">Principal Contra</th>
+                  </tr>
+                </thead>
+                <tbody class="text-[#5a5a5a]">
+                  <tr class="border-b border-[#e1dfdd] hover:bg-gray-50">
+                    <td class="p-4 font-bold text-[#1a1a1a]">Nu (Nubank)</td>
+                    <td class="p-4">$0 siempre</td>
+                    <td class="p-4 text-[#107c10] font-bold">3% Nu+ ($0.10)</td>
+                    <td class="p-4">0%</td>
+                    <td class="p-4">Línea base baja</td>
+                  </tr>
+                  <tr class="bg-[#f8f9fa] border-b border-[#e1dfdd] hover:bg-[#eaf1f8]">
+                    <td class="p-4 font-bold text-[#1a1a1a]">RappiCard</td>
+                    <td class="p-4">$0 siempre</td>
+                    <td class="p-4 text-[#107c10] font-bold">3% (R), 2% (Web), 1% (Off)</td>
+                    <td class="p-4">0%</td>
+                    <td class="p-4">Ecosistema cautivo</td>
+                  </tr>
+                  <tr class="border-b border-[#e1dfdd] hover:bg-gray-50">
+                    <td class="p-4 font-bold text-[#1a1a1a]">Santander LikeU</td>
+                    <td class="p-4">$0 siempre</td>
+                    <td class="p-4 text-[#107c10] font-bold">6% (F), 5% (R), 4% (T)</td>
+                    <td class="p-4">3%</td>
+                    <td class="p-4">Tope retorno de solo $500</td>
+                  </tr>
+                  <tr class="bg-[#f8f9fa] border-b border-[#e1dfdd] hover:bg-[#eaf1f8]">
+                    <td class="p-4 font-bold text-[#1a1a1a]">BBVA Azul Digital</td>
+                    <td class="p-4">$0 de por vida</td>
+                    <td class="p-4 text-[#0056b3] font-semibold">9% Puntos (&lt; 1% mx)</td>
+                    <td class="p-4">3.5%</td>
+                    <td class="p-4">Atraso revoca beneficio anualidad</td>
+                  </tr>
+                  <tr class="border-b border-[#e1dfdd] hover:bg-gray-50">
+                    <td class="p-4 font-bold text-[#1a1a1a]">HSBC Zero</td>
+                    <td class="p-4">$0 ($1 de uso)</td>
+                    <td class="p-4 text-[#a4262c] font-semibold">Solo Promos Esporádicas</td>
+                    <td class="p-4">2.75%</td>
+                    <td class="p-4">Ausencia de beneficios estables</td>
+                  </tr>
+                  <tr class="bg-[#f8f9fa] border-b border-[#e1dfdd] hover:bg-[#eaf1f8]">
+                    <td class="p-4 font-bold text-[#1a1a1a]">Banorte One Up</td>
+                    <td class="p-4">$0 usándola base</td>
+                    <td class="p-4 text-[#0056b3] font-semibold">3x Pts rubro a elegir</td>
+                    <td class="p-4">1.5%</td>
+                    <td class="p-4">Cobra fuerte ($450) vs inactividad</td>
+                  </tr>
+                  <tr class="border-b border-[#e1dfdd] hover:bg-gray-50">
+                    <td class="p-4 font-bold text-[#1a1a1a]">Scotiabank IDEAL</td>
+                    <td class="p-4">$0 vitalicio</td>
+                    <td class="p-4 text-[#0056b3] font-semibold">0.56% (si pagas membresía)</td>
+                    <td class="p-4">2.9%</td>
+                    <td class="p-4">Pagarás por usar módulos básicos</td>
+                  </tr>
+                  <tr class="bg-[#f8f9fa] border-b border-[#e1dfdd] hover:bg-[#eaf1f8]">
+                    <td class="p-4 font-bold text-[#1a1a1a]">Costco Citi</td>
+                    <td class="p-4">$450 post año 1</td>
+                    <td class="p-4 text-[#0056b3] font-semibold">3% en C, 2% Fuera</td>
+                    <td class="p-4">3%</td>
+                    <td class="p-4">Anualidad bloqueada, Cuponización</td>
+                  </tr>
+                  <tr class="border-b border-[#e1dfdd] hover:bg-gray-50">
+                    <td class="p-4 font-bold text-[#1a1a1a]">Stori Black</td>
+                    <td class="p-4">$0 siempre</td>
+                    <td class="p-4 text-[#0056b3] font-semibold">1% Líquido</td>
+                    <td class="p-4">4%</td>
+                    <td class="p-4">Intereses exageradamente altos</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- SEC: RECOMENDACIONES -->
+        <div id="sec-recomendaciones" class="hidden grid-cols-1 md:grid-cols-2 gap-6 max-w-6xl mx-auto">
+          <div class="bento-card p-6 bg-white shrink-0">
+            <h3 class="font-bold text-[#1a1a1a] mb-2 flex items-center gap-2 text-lg">
+              <span class="material-symbols-outlined text-[#0056b3]">receipt_long</span> Si priorizas Meses Sin Intereses (MSI)
+            </h3>
+            <p class="text-sm text-[#5a5a5a] mt-3 leading-relaxed">Considera tarjetas de bancos tradicionales que tengan alianzas amplias de MSI. Por ejemplo, <strong>Banorte One Up</strong> ofrece MSI general de bienvenida. <strong>Citibanamex</strong> es famoso por promociones estelares en eventos (ej. 12 MSI Amazon). Bancos grandes superan a Fintechs en promociones MSI en tienda.</p>
+          </div>
+          <div class="bento-card p-6 bg-white shrink-0">
+            <h3 class="font-bold text-[#1a1a1a] mb-2 flex items-center gap-2 text-lg">
+              <span class="material-symbols-outlined text-[#0056b3]">request_quote</span> El máximo cashback líquido
+            </h3>
+            <p class="text-sm text-[#5a5a5a] mt-3 leading-relaxed">Actualmente, la mejor opción nacional es <strong>Nu</strong> garantizando un ~3% efectivo con Nu+ muy por delante de la industria. Le sigue <strong>RappiCard</strong> diversificada en consumos online. En esquemas de sector fijo, tu banco aliado es <strong>Santander LikeU</strong> dando 6% si necesitas medicamentos.</p>
+          </div>
+          <div class="bento-card p-6 bg-white shrink-0">
+            <h3 class="font-bold text-[#1a1a1a] mb-2 flex items-center gap-2 text-lg">
+              <span class="material-symbols-outlined text-[#0056b3]">flight_takeoff</span> Si viajas frecuentemente e inviertes USD
+            </h3>
+            <p class="text-sm text-[#5a5a5a] mt-3 leading-relaxed">Olvídate de HSBC Zero pese a los vuelos gratis base: cobra conversión cambiaria. Necesitas tarjetas que mantengan sin comisiones de tipo FX tu fondo, para esto tanto <strong>RappiCard</strong> como <strong>Nubank</strong> asumen un 0% comisión (vs 3.5% que usaría un tradicional azul).</p>
+          </div>
+          <div class="bento-card p-6 bg-[#fde7e9] border border-[#a4262c] shrink-0">
+            <h3 class="font-bold text-[#a4262c] mb-2 flex items-center gap-2 text-lg">
+              <span class="material-symbols-outlined">warning</span> Alertas y "Letra Chiquita" (Riesgos)
+            </h3>
+            <p class="text-sm text-[#1a1a1a] mt-3 leading-relaxed">
+               - <strong>Cambios repentinos</strong>: Stori Black ya redujo sus porcentajes sorpresivamente tras captar atención, igual Santander cortó los cashbacks por gasolina.<br><br>
+               - <strong>Cobros Silenciosos de Inactividad</strong>: Banorte o Scotiabank te aplicarán cuotas grandes si fallas en utilizarlas, BBVA revocará tus protecciones bajo mínima mora. Diversifica tu cartera.
+            </p>
+          </div>
+        </div>
+
+        <!-- SEC: QUIZ -->
+        <div id="sec-quiz" class="hidden h-full flex-col md:flex-row gap-6 max-w-6xl mx-auto items-start">
+          <div class="bento-card p-6 flex flex-col flex-1 w-full" id="quiz-area-main">
+            <div class="mb-4">
+              <span class="text-[#0056b3] text-[10px] font-bold uppercase tracking-widest">Comprensión Recta</span>
+              <h4 id="quiz-q-text" class="text-base md:text-lg font-bold mt-1 text-[#1a1a1a]">Cargando pregunta...</h4>
+            </div>
+            
+            <div id="quiz-options" class="space-y-3 flex-1 mb-6">
+            </div>
+
+            <div id="quiz-feedback-box" class="hidden p-4 rounded-lg transition-all mt-auto border">
+              <p id="quiz-feedback-title" class="font-bold uppercase mb-1">Retroalimentación</p>
+              <p id="quiz-feedback-text" class="text-xs md:text-sm"></p>
+            </div>
+
+            <button id="quiz-next-btn" onclick="nextQuestion()" class="hidden mt-6 w-full bg-[#0056b3] text-white py-3 rounded-lg font-bold transition-all md:hover:bg-blue-800">
+              Siguiente Pregunta
+            </button>
+          </div>
+
+          <div class="bento-card p-6 w-full md:w-72 shrink-0" id="quiz-area-progress">
+             <h3 class="text-[#1a1a1a] font-bold text-sm flex items-center justify-between">
+              Progreso
+              <span class="text-[#0056b3] text-lg font-bold" id="score-display">0 / 10</span>
+            </h3>
+            <div class="w-full bg-gray-100 h-2 rounded-full mt-4 overflow-hidden">
+              <div id="score-progress-bar" class="bg-[#0056b3] h-full rounded-full transition-all duration-300" style="width: 0%"></div>
+            </div>
+            <p class="text-xs text-[#5a5a5a] mt-4 text-center">Para aprobar se requiere lograr un desempeño de nivel experto.</p>
+          </div>
+
+          <!-- Final Screen -->
+          <div id="quiz-final-area" class="hidden bento-card p-8 flex-col flex-1 items-center justify-center text-center w-full bg-[#f0f7ff] border-[#0056b3] border-2">
+             <span class="material-symbols-outlined text-[64px] text-[#0056b3] mb-4">emoji_events</span>
+             <h2 class="text-2xl font-bold mb-2 text-[#0056b3]">Evaluación Concluida</h2>
+             <p class="text-[#5a5a5a] mb-6 max-w-sm">Tu nivel de comprensión del ecosistema financiero actual es analizado con este resultado:</p>
+             <div class="text-5xl font-bold text-[#1a1a1a] mb-8" id="quiz-final-score">0 / 10</div>
+             <p class="text-sm font-bold text-[#1a1a1a] mb-8"></p>
+             <button onclick="restartQuiz()" class="bg-[#0056b3] text-white px-8 py-3 rounded-lg font-bold hover:bg-blue-800 transition-colors">Empezar de nuevo</button>
+          </div>
+        </div>
+
+      </div>
+    </main>
+
+    <script>
+      const sections = ['resumen', 'tarjetas', 'tabla', 'recomendaciones', 'quiz'];
+      const titles = {
+        'resumen': 'Resumen Exclusivo y Top 5',
+        'tarjetas': 'Detalle Profundo Tarjetas',
+        'tabla': 'Matriz Comparativa Numérica',
+        'recomendaciones': 'Recomendaciones Estratégicas',
+        'quiz': 'Validación Académica'
+      };
+
+      function showSection(id) {
+        sections.forEach(sec => {
+          const actSecEl = document.getElementById('sec-' + sec);
+          actSecEl.classList.add('hidden');
+          actSecEl.classList.remove('grid', 'flex');
+          
+          const nav = document.getElementById('nav-' + sec);
+          nav.classList.remove('bg-[#f0f7ff]', 'text-[#0056b3]', 'border-[#0056b3]', 'font-medium');
+          nav.classList.add('text-[#5a5a5a]', 'border-transparent');
+        });
+        
+        const actSecInfo = document.getElementById('sec-' + id);
+        actSecInfo.classList.remove('hidden');
+        if (id === 'tabla' || id === 'quiz') { actSecInfo.classList.add('flex'); }
+        else { actSecInfo.classList.add('grid'); }
+
+        const actNavInfo = document.getElementById('nav-' + id);
+        actNavInfo.classList.remove('text-[#5a5a5a]', 'border-transparent');
+        actNavInfo.classList.add('bg-[#f0f7ff]', 'text-[#0056b3]', 'border-[#0056b3]', 'font-medium');
+
+        document.getElementById('header-title').innerText = titles[id];
+      }
+
+      const questions = [
+        { q: "¿Qué cambio relevante implementó Nubank en 2025 en su programa de recompensas?",
+          opts: ["A) Redujo su cashback general a la mitad", "B) Lanzó Nu+ con 3% cashback directo", "C) Instaló cuotas obligatorias a MSI", "D) Suspendió el canje de depósitos locales"],
+          ans: 1, feedback: "En 2025 Nubank lanzó el programa 'Nu+', otorgando 3% en puntos de crédito usables en efectivo a equivalente de 10 centavos." },
+        { q: "Para mantener de por vida la política $0 pesos en BBVA Azul Digital...",
+          opts: ["A) Exigen tramitar portabilidad de nómina anexa", "B) No se puede acumular un saldo moratorio de dos meses seguidos", "C) Limitan el tope a solo sucursales web", "D) Obligatorio un mínimo mensual de $5k"],
+          ans: 1, feedback: "BBVA especifica que la penalización por una mora continuada de 2 meses implica la re-activación de cuotas anuales estándar." },
+        { q: "En Santander LikeU, ¿cuál es la categoría donde percibirás el rango del 6%?",
+          opts: ["A) Cines Premium", "B) Supermercados", "C) Farmacias", "D) Entretenimiento General"],
+          ans: 2, feedback: "De acuerdo a las normativas de julio 2025: Santander entrega 6% estricto en el rubro farmacéutico general, 5% comedores y demás gradientes inferiores." },
+        { q: "¿Cómo distribuye Citi su retorno para la edición Costco?",
+          opts: ["A) Descuentos por boletos libres interanuales", "B) Efectivo bancario inmediato por mes en base al total", "C) Certificado o cupón físico en fechas del corte en Diciembre", "D) En créditos exclusivos para la gasolinera adscrita"],
+          ans: 2, feedback: "A diferencia del líquido general que prefiere un usuario Fintech, Citibanamex amarra el flujo en cheques pagaderos únicamente a las tiendas en sus navidades." },
+        { q: "La principal trampa de gratuidad en Santander Free radica en que:",
+          opts: ["A) Expulsan tu historial ante no renovaciones", "B) Eliminaron los créditos superiores a 10 mil pesos", "C) Bloquean cobros digitales automáticamente", "D) Aplican comisiones de Mantenimiento de $160 si careces de facturaciones."],
+          ans: 3, feedback: "Santander es estricto en forzar que interactúes con tu plástico al menos desembolsando una cifra chica mensual, o sufrirán el gravamen directo por mantenimiento." },
+        { q: "Para asegurar exentar el pesado cargo en la Banorte One Up, debes:",
+          opts: ["A) Cubrir 7,500 en compras cumulativas de índole Trimestral", "B) Gastar 3 mil constantes unicamente de giros médicos", "C) Mantener activas alertas premium de Buró", "D) Referir anualmente a dos invitados VIP"],
+          ans: 0, feedback: "La Banorte One Up maneja un concepto de inactividad de $450 base trimestre si el cliente omitió o falló en reunir compras por al menos $7,500." },
+        { q: "Aunque adolezca de cashbacks sistemáticos, ¿qué atributo singular da HSBC Zero?",
+          opts: ["A) Préstamos preferenciales en criptomonedas", "B) Costo 0% para todas y cada una de sus Retiros desde Cajeros", "C) Tasas preferenciales de interés nulas a plazos lejanos fijos", "D) Aprobaciones incondicionales ante deudores con Buró"],
+          ans: 1, feedback: "Ahorrando ese 6% o más que los competidores dictan, aunque su principal obstáculo es que el CAT de intereses empieza a contarse ese mismo día." },
+        { q: "¿Cuál es el esquema base propuesto del modelo de Scotiabank IDEAL?",
+          opts: ["A) Pagar una cuota rígida y recibir todas las recompensas escalonadas", "B) Suscripciones modulares por segmento (Ej. $620 al semestre MSI y Cashbacks separados)", "C) El cobro por nivel de transaccionalidad total del mes base", "D) Estricta gratuidad atada netamente a portabilidad nomina Scotia"],
+          ans: 1, feedback: "Scotiabank ha construido este esquema fraccionado en módulos semi-anuales o anuales donde el cliente abona su acceso a los subprogramas MSI Rewards preferentes." },
+        { q: "Con el objetivo de maximizar tu rendimiento durante travesías turísticas Internacionales, ¿quién gana?",
+          opts: ["A) Nu, Stori", "B) BBVA Azul y Costco Citi", "C) RappiCard y Nu", "D) Santander LikeU / One Up"],
+          ans: 2, feedback: "Al ser tarjetas que descartan cuotas adicionales FX aplicándose un 0% llano, amortiguan considerablemente y lideran contablemente a nivel viaje sin conversiones penosas." },
+        { q: "El informe alerta concretamente de cuidarse de las startups Fintech porque:",
+          opts: ["A) Imponen plazos cortos de pago a liquidación", "B) Cobran el plástico sustituto con inflaciones", "C) Están ejecutando reveses repentinos sin previo aviso del nivel de sus retornos de cashback base o giros.", "D) Tienen esquemas complejos de validación biométrica propensos al fracaso fronterizo"],
+          ans: 2, feedback: "Estructuras poco consolidadas cambian márgenes sobre el usuario atrayéndolo con 3% y bajándolo a 1% tras ganar usuarios pautados." }
+      ];
+
+      let currQ = 0;
+      let score = 0;
+      let answered = false;
+
+      function renderQuiz() {
+        const qData = questions[currQ];
+        document.getElementById('quiz-q-text').innerText = `Pregunta ${currQ+1} de 10: ${qData.q}`;
+        
+        let html = '';
+        qData.opts.forEach((opt, idx) => {
+          html += `
+            <div id="opt-${idx}" onclick="answerQuiz(${idx})" class="p-4 border border-[#e1dfdd] rounded-lg cursor-pointer transition-all bg-white text-xs md:text-sm hover:border-[#0056b3] hover:shadow-sm">
+              ${opt}
+            </div>
+          `;
+        });
+        document.getElementById('quiz-options').innerHTML = html;
+        document.getElementById('quiz-feedback-box').className = 'hidden p-4 rounded-lg transition-all mt-auto border';
+        document.getElementById('quiz-next-btn').classList.add('hidden');
+        answered = false;
+        updateScoreView();
+      }
+
+      function answerQuiz(idx) {
+        if (answered) return;
+        answered = true;
+        const qData = questions[currQ];
+        const isCorrect = idx === qData.ans;
+        
+        if (isCorrect) score++;
+
+        qData.opts.forEach((_, i) => {
+          const el = document.getElementById(`opt-${i}`);
+          el.classList.remove('hover:border-[#0056b3]', 'cursor-pointer', 'hover:shadow-sm');
+          if (i === qData.ans) {
+            el.className = 'p-4 rounded-lg border text-xs md:text-sm flex justify-between items-center bg-[#dff6dd] border-[#107c10] text-[#107c10] font-bold';
+            el.innerHTML += `<span class="material-symbols-outlined text-[18px]">check_circle</span>`;
+          } else if (i === idx && !isCorrect) {
+            el.className = 'p-4 rounded-lg border text-xs md:text-sm flex justify-between items-center bg-[#fde7e9] border-[#a4262c] text-[#a4262c] font-bold';
+            el.innerHTML += `<span class="material-symbols-outlined text-[18px]">cancel</span>`;
+          } else {
+            el.className = 'p-4 rounded-lg border text-xs md:text-sm border-[#e1dfdd] bg-gray-50 text-gray-400';
+          }
+        });
+
+        const fbBox = document.getElementById('quiz-feedback-box');
+        fbBox.classList.remove('hidden');
+        const fbTitle = document.getElementById('quiz-feedback-title');
+        
+        if (isCorrect) {
+          fbBox.classList.add('bg-[#dff6dd]', 'border-[#107c10]');
+          fbTitle.innerText = "¡Acierto en la Respuesta!";
+          fbTitle.className = "text-[11px] text-[#107c10] font-bold uppercase mb-1";
+          document.getElementById('quiz-feedback-text').className = "text-xs md:text-sm text-[#107c10]";
+        } else {
+          fbBox.classList.add('bg-[#fde7e9]', 'border-[#a4262c]');
+          fbTitle.innerText = "Repuesta Incorrecta";
+          fbTitle.className = "text-[11px] text-[#a4262c] font-bold uppercase mb-1";
+          document.getElementById('quiz-feedback-text').className = "text-xs md:text-sm text-[#a4262c]";
+        }
+        document.getElementById('quiz-feedback-text').innerText = qData.feedback;
+        
+        const nxtBtn = document.getElementById('quiz-next-btn');
+        nxtBtn.classList.remove('hidden');
+        if (currQ === questions.length - 1) {
+          nxtBtn.innerText = "Ver Calificación Final";
+        } else {
+          nxtBtn.innerText = "Siguiente Pregunta";
+        }
+        updateScoreView();
+      }
+
+      function nextQuestion() {
+        if (currQ < questions.length - 1) {
+          currQ++;
+          renderQuiz();
+        } else {
+          document.getElementById('quiz-area-main').classList.add('hidden');
+          document.getElementById('quiz-area-progress').classList.add('hidden');
+          document.getElementById('quiz-final-area').classList.remove('hidden', 'flex-col');
+          document.getElementById('quiz-final-area').classList.add('flex', 'flex-col');
+          
+          document.getElementById('quiz-final-score').innerText = `${score} / 10`;
+          
+          const titleMap = document.querySelectorAll('#quiz-final-area p')[1];
+          if (score >= 9) {
+             titleMap.innerText = "¡Impecable! Excelente capacidad investigativa de matrices crediticias.";
+             titleMap.className = "text-sm font-bold text-[#107c10] mb-8";
+          } else if (score >= 6) {
+             titleMap.innerText = "¡Buen Trabajo! Pero corres riesgo de dejar que la letra chica dicte fallos ocasionales.";
+             titleMap.className = "text-sm font-bold text-[#0056b3] mb-8";
+          } else {
+             titleMap.innerText = "Fallaste múltiples alertas en comisiones base o riesgos cambiarios corporativos. Es imperioso un re-estudio de este informe.";
+             titleMap.className = "text-sm font-bold text-[#a4262c] mb-8";
+          }
+        }
+      }
+
+      function restartQuiz() {
+        currQ = 0; score = 0;
+        document.getElementById('quiz-area-main').classList.remove('hidden');
+        document.getElementById('quiz-area-progress').classList.remove('hidden');
+        document.getElementById('quiz-final-area').classList.add('hidden', 'flex-col', 'flex');
+        document.getElementById('quiz-final-area').classList.remove('flex', 'flex-col');
+        renderQuiz();
+      }
+
+      function updateScoreView() {
+        document.getElementById('score-display').innerText = `${score} / 10`;
+        const progress = (currQ / 10) * 100;
+        document.getElementById('score-progress-bar').style.width = `${progress}%`;
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        showSection('resumen');
+        renderQuiz();
+      });
+    </script>
+  </body>
+</html>
