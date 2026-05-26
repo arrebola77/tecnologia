@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yo Aprendo a mi Manera - M365</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: '#0078d4',
+                        bg: '#f8f9fa',
+                        surface: '#ffffff',
+                        border: '#e1dfdd',
+                        text: '#1a1a1a',
+                        'text-muted': '#5a5a5a',
+                        success: '#107c10',
+                        'success-bg': '#dff6dd',
+                        error: '#a4262c',
+                        'error-bg': '#fde7e9'
+                    }
+                }
+            }
+        }
+    </script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        .bento-card {
+            background-color: #ffffff;
+            border: 1px solid #e1dfdd;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border-radius: 1rem;
+            padding: 1.5rem;
+        }
+        .tab-btn.active {
+            background-color: #0078d4;
+            color: #ffffff;
+            font-weight: 600;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        .tab-btn.active svg { color: #ffffff; }
+        .tab-btn:not(.active) { color: #5a5a5a; }
+        .tab-btn:not(.active):hover {
+            background-color: #f8f9fa;
+            color: #1a1a1a;
+        }
+        .tab-btn:not(.active) svg { color: #0078d4; }
+        .tab-content { display: none; }
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .quiz-option {
+            padding: 1rem;
+            border-radius: 0.75rem;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            background-color: #f8f9fa;
+        }
+        .quiz-option:hover {
+            border-color: #e1dfdd;
+            background-color: #ffffff;
+        }
+        .quiz-option.selected {
+            background-color: rgba(0, 120, 212, 0.05);
+            border-color: #0078d4;
+            color: #0078d4;
+            font-weight: 600;
+        }
+        .quiz-option.correct {
+            background-color: #dff6dd !important;
+            border-color: #107c10 !important;
+            color: #107c10 !important;
+            font-weight: 700;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+        .quiz-option.incorrect {
+            background-color: #fde7e9 !important;
+            border-color: #a4262c !important;
+            color: #a4262c !important;
+            font-weight: 500;
+        }
+        .quiz-option.disabled {
+            pointer-events: none;
+        }
+        .quiz-card {
+            transition: all 0.3s;
+        }
+        .quiz-card.correct {
+            background-color: #dff6dd;
+            border-color: #107c10;
+        }
+        .quiz-card.incorrect {
+            background-color: #fde7e9;
+            border-color: #a4262c;
+        }
+    </style>
+</head>
+<body class="flex flex-col md:flex-row min-h-screen bg-bg font-sans text-text">
+
+    <!-- Nav -->
+    <nav class="w-full md:w-72 bg-surface border-b md:border-b-0 md:border-r border-border p-4 flex flex-row md:flex-col gap-2 overflow-x-auto sticky top-0 md:top-auto z-10 md:h-screen shrink-0">
+        <div class="hidden md:block mb-8 pt-4 px-2">
+            <h1 class="text-2xl font-bold text-brand">Yo Aprendo<br/>a mi Manera</h1>
+            <p class="text-sm text-text-muted mt-2 font-medium">Ecosistema Microsoft 365</p>
+        </div>
+        <button onclick="switchTab('overview')" id="btn-overview" class="tab-btn active flex items-center gap-3 px-4 py-3 rounded-xl transition-all whitespace-nowrap outline-none">
+            <i data-lucide="book-open"></i><span>Introducción</span>
+        </button>
+        <button onclick="switchTab('collaboration')" id="btn-collaboration" class="tab-btn flex items-center gap-3 px-4 py-3 rounded-xl transition-all whitespace-nowrap outline-none">
+            <i data-lucide="users"></i><span>Colaboración</span>
+        </button>
+        <button onclick="switchTab('culture')" id="btn-culture" class="tab-btn flex items-center gap-3 px-4 py-3 rounded-xl transition-all whitespace-nowrap outline-none">
+            <i data-lucide="clipboard-list"></i><span>Cultura y Tareas</span>
+        </button>
+        <button onclick="switchTab('ai')" id="btn-ai" class="tab-btn flex items-center gap-3 px-4 py-3 rounded-xl transition-all whitespace-nowrap outline-none">
+            <i data-lucide="bot"></i><span>Copilot e IA</span>
+        </button>
+        <button onclick="switchTab('quiz')" id="btn-quiz" class="tab-btn flex items-center gap-3 px-4 py-3 rounded-xl transition-all whitespace-nowrap outline-none">
+            <i data-lucide="check-circle"></i><span>Evaluación</span>
+        </button>
+    </nav>
+
+    <!-- Main -->
+    <main class="flex-1 p-4 md:p-8 overflow-y-auto w-full mx-auto md:h-screen">
+        <div class="max-w-5xl mx-auto pb-20">
+
+            <!-- Overview -->
+            <div id="tab-overview" class="tab-content active">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+                    <div class="bento-card md:col-span-2 relative overflow-hidden border-none shadow-[0_8px_30px_rgb(0,0,0,0.06)]">
+                        <div class="absolute top-0 right-0 w-64 h-64 bg-brand opacity-5 rounded-full blur-3xl -mr-20 -mt-20 pointer-events-none"></div>
+                        <h2 class="text-3xl font-bold text-brand mb-4">¿Qué es Microsoft 365?</h2>
+                        <p class="text-text-muted text-lg leading-relaxed mb-4">Es una plataforma integral de productividad en la nube que combina las aplicaciones clásicas de Office con servicios de almacenamiento, comunicación unificada y herramientas de seguridad empresarial.</p>
+                        <p class="text-text-muted text-lg leading-relaxed">Su propósito es ofrecer un entorno digital conectado y protegido, facilitando el trabajo híbrido y la colaboración sin fronteras.</p>
+                    </div>
+                    
+                    <div class="bento-card h-full">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="p-3 bg-brand/10 rounded-xl"><i data-lucide="bot" class="text-brand w-6 h-6"></i></div>
+                            <h3 class="text-xl font-bold text-text">Nueva Era con IA</h3>
+                        </div>
+                        <p class="text-text-muted leading-relaxed">Con <strong>Copilot Chat</strong>, incluido sin costo adicional en la suscripción, los usuarios cuentan con un asistente potenciado por GPT-4 para resumir, redactar e idear, actuando como un copiloto productivo bajo control humano.</p>
+                    </div>
+                    
+                    <div class="bento-card h-full">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="p-3 bg-brand/10 rounded-xl"><i data-lucide="users" class="text-brand w-6 h-6"></i></div>
+                            <h3 class="text-xl font-bold text-text">Trabajo Sincronizado</h3>
+                        </div>
+                        <p class="text-text-muted leading-relaxed">Un ecosistema dinámico donde OneDrive, SharePoint y Teams mantienen los documentos y conversaciones actualizados en tiempo real, permitiendo una colaboración ininterrumpida.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Collaboration -->
+            <div id="tab-collaboration" class="tab-content">
+                <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
+                    <div class="bento-card xl:col-span-2 shadow-md">
+                        <div class="flex items-center gap-3 mb-5">
+                            <div class="p-3 bg-brand/10 rounded-xl">
+                                <i data-lucide="users" class="text-brand w-7 h-7"></i>
+                            </div>
+                            <h2 class="text-2xl font-bold text-text">Microsoft Teams</h2>
+                        </div>
+                        <p class="text-text-muted mb-6 text-lg">El centro de trabajo en equipo. Sustituye hilos de correo por comunicación ágil en un espacio estructurado y seguro.</p>
+                        <div class="space-y-4">
+                            <div class="flex gap-4 items-start p-4 bg-bg rounded-xl">
+                                <i data-lucide="check" class="text-brand shrink-0 mt-0.5 w-5 h-5"></i>
+                                <div>
+                                    <strong class="block text-text mb-1">Chats y Canales</strong>
+                                    <span class="text-text-muted text-sm">Organizan las conversaciones por proyectos. El historial permite incorporarse más tarde y entender todo el contexto.</span>
+                                </div>
+                            </div>
+                            <div class="flex gap-4 items-start p-4 bg-bg rounded-xl">
+                                <i data-lucide="check" class="text-brand shrink-0 mt-0.5 w-5 h-5"></i>
+                                <div>
+                                    <strong class="block text-text mb-1">Reuniones Virtuales y Herramientas</strong>
+                                    <span class="text-text-muted text-sm">Videollamadas integradas, pizarra interactiva (Whiteboard), salas de trabajo y aplicaciones como Planner dentro del canal.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bento-card xl:col-span-1 bg-brand text-white border-transparent">
+                        <h3 class="text-xl font-bold mb-4 flex items-center gap-2">
+                            <div class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></div>
+                            Coautoría en Vivo
+                        </h3>
+                        <p class="opacity-90 leading-relaxed">
+                            Permite que varias personas editen un documento simultáneamente. Observas modificaciones en vivo, cursores de quién está escribiendo y comentarios en contexto. Fin a las "Versión Final V3" por correo.
+                        </p>
+                    </div>
+
+                    <div class="bento-card xl:col-span-3 overflow-hidden">
+                        <h3 class="text-xl font-bold text-text mb-5">OneDrive vs SharePoint</h3>
+                        <div class="overflow-x-auto rounded-xl border border-border">
+                            <table class="w-full text-left border-collapse min-w-[600px]">
+                                <thead class="bg-text text-white">
+                                    <tr>
+                                        <th class="p-4 font-semibold text-sm">Característica</th>
+                                        <th class="p-4 font-semibold text-sm">OneDrive para la Empresa</th>
+                                        <th class="p-4 font-semibold text-sm">SharePoint</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="text-sm text-text bg-white">
+                                        <td class="p-4 border-b border-border font-medium">Uso Principal</td>
+                                        <td class="p-4 border-b border-border">Biblioteca personal en la nube</td>
+                                        <td class="p-4 border-b border-border">Plataforma colectiva e intranets</td>
+                                    </tr>
+                                    <tr class="text-sm text-text bg-bg">
+                                        <td class="p-4 border-b border-border font-medium">Gestión de Acceso</td>
+                                        <td class="p-4 border-b border-border">Privado (El usuario decide qué compartir)</td>
+                                        <td class="p-4 border-b border-border">Compartido y gobernado por el equipo</td>
+                                    </tr>
+                                    <tr class="text-sm text-text bg-white">
+                                        <td class="p-4 border-b border-border font-medium">Dinámica Común</td>
+                                        <td class="p-4 border-b border-border">Donde comienzas a trabajar borradores</td>
+                                        <td class="p-4 border-b border-border">Donde se publica centralmente</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Culture -->
+            <div id="tab-culture" class="tab-content">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="bento-card">
+                        <h2 class="text-2xl font-bold text-text mb-2 flex items-center gap-2">
+                            <span class="w-8 h-8 rounded-lg bg-brand/10 flex items-center justify-center text-brand text-sm">1</span>
+                            Microsoft Viva
+                        </h2>
+                        <p class="text-text-muted mb-5 text-sm">Módulos centrados en la cultura, conexión y bienestar del empleado.</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div class="p-4 bg-white border border-border shadow-sm rounded-xl">
+                                <strong class="text-brand block text-base mb-1">Connections</strong>
+                                <span class="text-text-muted text-sm">Intranet y recursos corporativos dentro de Teams.</span>
+                            </div>
+                            <div class="p-4 bg-white border border-border shadow-sm rounded-xl">
+                                <strong class="text-brand block text-base mb-1">Engage</strong>
+                                <span class="text-text-muted text-sm">Red social empresarial y comunidades abiertas.</span>
+                            </div>
+                            <div class="p-4 bg-white border border-border shadow-sm rounded-xl">
+                                <strong class="text-brand block text-base mb-1">Insights</strong>
+                                <span class="text-text-muted text-sm">Patrones de trabajo saludables y tiempo de concentración.</span>
+                            </div>
+                            <div class="p-4 bg-white border border-border shadow-sm rounded-xl">
+                                <strong class="text-brand block text-base mb-1">Learning</strong>
+                                <span class="text-text-muted text-sm">Capacitación integrada al flujo de trabajo.</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bento-card">
+                        <h2 class="text-2xl font-bold text-text mb-2 flex items-center gap-2">
+                            <span class="w-8 h-8 rounded-lg bg-brand/10 flex items-center justify-center text-brand text-sm">2</span>
+                            Gestión de Tareas
+                        </h2>
+                        <p class="text-text-muted mb-5 text-sm">Organización sincronizada personal y de equipo.</p>
+                        <div class="space-y-4">
+                            <div class="p-5 border border-border rounded-xl bg-bg relative overflow-hidden">
+                                <div class="absolute left-0 top-0 bottom-0 w-1 bg-brand"></div>
+                                <h4 class="font-bold text-text text-lg mb-1">Microsoft To Do</h4>
+                                <p class="text-sm text-text-muted">Tu panel personal diario. Centraliza tareas manuales, correos de Outlook y elementos asignados desde Planner usando la vista optimizada "Mi Día".</p>
+                            </div>
+                            <div class="p-5 border border-border rounded-xl bg-surface shadow-[0_2px_8px_rgba(0,0,0,0.04)] relative overflow-hidden">
+                                <div class="absolute left-0 top-0 bottom-0 w-1 bg-text-muted"></div>
+                                <h4 class="font-bold text-text text-lg mb-1">Microsoft Planner</h4>
+                                <p class="text-sm text-text-muted">Gestión visual de equipo. Tableros Kanban para asignar entregables en columnas. Perfectamente integrado a los canales de Teams.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AI -->
+            <div id="tab-ai" class="tab-content">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="bento-card shadow-lg border-t-4 border-t-brand">
+                        <h2 class="text-2xl font-bold text-text mb-4 flex items-center gap-3">
+                            <i data-lucide="bot" class="text-brand w-7 h-7"></i>
+                            Copilot Chat (Gratuito)
+                        </h2>
+                        <p class="text-text-muted mb-5">Tu asistente general de IA en Teams y la web. Especializado en trabajar con la información que decides suministrarle.</p>
+                        
+                        <div class="space-y-3 mb-6">
+                            <div class="flex items-center gap-3 bg-bg p-3 rounded-lg text-sm text-text">
+                                <span class="w-2 h-2 rounded-full bg-brand shrink-0"></span> Resumen ágil y estructurado de textos y minutas
+                            </div>
+                            <div class="flex items-center gap-3 bg-bg p-3 rounded-lg text-sm text-text">
+                                <span class="w-2 h-2 rounded-full bg-brand shrink-0"></span> Generación de borradores de correo o guiones
+                            </div>
+                            <div class="flex items-center gap-3 bg-bg p-3 rounded-lg text-sm text-text">
+                                <span class="w-2 h-2 rounded-full bg-brand shrink-0"></span> Promotor creativo en lluvias de ideas
+                            </div>
+                        </div>
+                        
+                        <div class="p-4 bg-error-bg border border-error rounded-xl flex items-start gap-3">
+                            <div class="text-error shrink-0 mt-0.5 text-lg">⚠️</div>
+                            <p class="text-sm text-error font-medium leading-relaxed">
+                                <strong>Privacidad Garantizada:</strong> No rastrea ni entrena modelos con tus solicitudes corporativas; analiza exclusivamente el contenido explícitamente pegado.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="bento-card">
+                        <h2 class="text-2xl font-bold text-text mb-6">Buenas Prácticas Prompts</h2>
+                        <div class="space-y-4">
+                            <div class="pl-4 border-l-2 border-brand">
+                                <strong class="text-text block mb-1">1. Especificidad Formativa</strong>
+                                <p class="text-sm text-text-muted">Proporciona propósito, tono, formato y longitud (ej. "Genera 3 viñetas breves con tono cordial").</p>
+                            </div>
+                            <div class="pl-4 border-l-2 border-text">
+                                <strong class="text-text block mb-1">2. Diseño Iterativo</strong>
+                                <p class="text-sm text-text-muted">Si el resultado es rígido, no empieces de cero; pídele "ajusta el punto 2 para que suene más empático".</p>
+                            </div>
+                            <div class="pl-4 border-l-2 border-brand">
+                                <strong class="text-text block mb-1">3. Supervisión Humana Crítica</strong>
+                                <p class="text-sm text-text-muted">La IA puede omitir matices (alucinación). Tienes la obligación de verificar cualquier dato técnico o cifra final.</p>
+                            </div>
+                            <div class="pl-4 border-l-2 border-text">
+                                <strong class="text-text block mb-1">4. Contextualización Directa</strong>
+                                <p class="text-sm text-text-muted">Proporciona recortes como anclaje. ("Usando este párrafo: [pegado] resume las fechas límite").</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quiz -->
+            <div id="tab-quiz" class="tab-content">
+                <div class="max-w-3xl mx-auto flex flex-col items-stretch">
+                    <div class="bg-brand text-white p-8 rounded-2xl mb-8 shadow-md">
+                        <h2 class="text-3xl font-bold mb-3">Evaluación Final</h2>
+                        <p class="text-lg opacity-90">Comprueba tu dominio de las herramientas y directrices del ecosistema digital Microsoft 365.</p>
+                    </div>
+
+                    <div id="quiz-container">
+                        <!-- Javascript inyecta el quiz aquí -->
+                    </div>
+
+                    <button id="submit-quiz-btn" onclick="submitQuiz()" class="w-full py-5 bg-brand text-white rounded-xl font-bold text-lg hover:bg-brand-dark transition-colors shadow-lg mt-8">
+                        Evaluar Resultados
+                    </button>
+
+                    <div id="quiz-results" class="hidden p-10 rounded-2xl border-2 mt-8 text-center shadow-lg">
+                        <h2 id="quiz-score-text" class="text-4xl font-bold mb-4">--</h2>
+                        <p id="quiz-score-sub" class="text-xl text-text mb-8 font-medium">--</p>
+                        <p id="quiz-score-msg" class="text-text-muted mb-8 text-lg">--</p>
+                        <button onclick="resetQuiz()" class="px-8 py-4 bg-white border-2 border-text text-text rounded-xl font-bold text-lg hover:bg-text hover:text-white transition-colors">
+                            Repetir Evaluación
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        // Init Lucide Icons
+        lucide.createIcons();
+
+        // Control Pestañas
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            
+            document.getElementById('tab-' + tabId).classList.add('active');
+            document.getElementById('btn-' + tabId).classList.add('active');
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Datos del Quiz (10 preguntas)
+        const quizData = [
+          { question: "¿Cuál es la diferencia fundamental entre el almacenamiento en OneDrive y en SharePoint?", options: ["OneDrive es de pago y SharePoint es una herramienta gratuita.", "OneDrive está diseñado para el repositorio personal de archivos del usuario, mientras que SharePoint es para el almacenamiento colectivo de equipos.", "OneDrive solo permite guardar archivos de Word, mientras que SharePoint admite cualquier tipo de formato.", "OneDrive requiere servidores locales y SharePoint funciona exclusivamente en la nube."], answer: 1 },
+          { question: "Un equipo de Marketing quiere estructurar sus conversaciones para que los temas no se pierdan. ¿Qué usar en Teams?", options: ["Chats grupales rápidos.", "Canales dentro de un equipo estructurado.", "Componentes dinámicos de Microsoft Loop.", "Salas de trabajo compartidas (breakout rooms)."], answer: 1 },
+          { question: "¿Qué sucede de forma automática cuando se crea un nuevo equipo en Microsoft Teams?", options: ["Se genera una licencia de pago de Microsoft 365 Copilot para cada miembro.", "Se crea automáticamente un sitio de SharePoint asociado para gestionar los archivos de ese grupo.", "El sistema activa un flujo en Power Automate para enviar correos de bienvenida.", "Se genera un tablero avanzado en Microsoft Project."], answer: 1 },
+          { question: "¿Cómo interactúan las herramientas Microsoft To Do y Microsoft Planner para centralizar las tareas de un usuario?", options: ["Las tareas de To Do se envían a un tablero Kanban público en Planner.", "To Do elimina las tareas de Planner para que el usuario no se sature.", "Las tareas asignadas en Planner aparecen automáticamente en To Do en la sección 'Asignadas a mí'.", "No tienen ninguna relación; To Do es para correos de Outlook y Planner es para Teams."], answer: 2 },
+          { question: "Si necesitas que una lista de ideas se edite en tiempo real en Teams, Outlook y SharePoint, ¿qué usas?", options: ["Un formulario de Microsoft Forms.", "Un componente dinámico de Microsoft Loop.", "Una pestaña de Microsoft OneNote.", "Un diagrama interactivo de Visio para la Web."], answer: 1 },
+          { question: "Estás saturado y necesitas programar tiempo de concentración. ¿Qué módulo de Microsoft Viva te proporciona esto?", options: ["Viva Connections.", "Viva Engage.", "Viva Learning.", "Viva Insights."], answer: 3 },
+          { question: "Un usuario sin conocimientos de programación desea automatizar guardar adjuntos de correo en OneDrive. ¿Qué usar?", options: ["Microsoft Power Apps.", "Microsoft Power Automate.", "Microsoft Search.", "Copilot Chat avanzado."], answer: 1 },
+          { question: "Respecto a la privacidad de Copilot Chat (versión gratuita), ¿cuál afirmación es CORRECTA?", options: ["Accede automáticamente a todos tus archivos privados de SharePoint y OneDrive.", "Utiliza todas tus conversaciones para entrenar sus modelos de lenguaje públicos.", "No accede a datos corporativos por defecto; trabaja con la información que el usuario le proporciona.", "Está incrustado contextualmente dentro de Word y Excel para generar gráficos."], answer: 2 },
+          { question: "¿Cuál es la principal diferencia entre el Copilot Chat gratuito y la licencia de pago de M365 Copilot?", options: ["El gratuito no permite hacer resúmenes de texto y el de pago sí.", "La versión de pago accede a Microsoft Graph (y tu contexto) y se integra dentro de Word, Excel, etc.", "La versión gratuita solo funciona en teléfonos móviles y la de pago en la computadora.", "El gratuito requiere que sepas programar código para poder usarlo."], answer: 1 },
+          { question: "Al utilizar asistentes de Inteligencia Artificial en el entorno laboral, ¿cuál es la buena práctica indispensable?", options: ["Confiar plenamente en los datos generados, ya que GPT-4 no comete errores.", "Copiar y pegar información altamente confidencial sin restricciones.", "El ojo humano final es imprescindible; se deben revisar, validar y verificar los datos.", "Utilizar comandos complejos de programación, ya que la IA no entiende lenguaje."], answer: 2 }
+        ];
+
+        let answers = {};
+        let isSubmitted = false;
+
+        function renderQuiz() {
+            const container = document.getElementById('quiz-container');
+            container.innerHTML = '';
+            
+            quizData.forEach((q, qIndex) => {
+                const card = document.createElement('div');
+                card.id = 'q-card-' + qIndex;
+                card.className = 'bento-card mb-6 quiz-card';
+                
+                const questionTitle = document.createElement('h3');
+                questionTitle.className = 'text-lg font-bold mb-5 text-text';
+                questionTitle.id = 'q-title-' + qIndex;
+                questionTitle.innerText = (qIndex + 1) + ". " + q.question;
+                card.appendChild(questionTitle);
+                
+                const optionsContainer = document.createElement('div');
+                optionsContainer.className = 'space-y-3';
+                
+                q.options.forEach((opt, oIndex) => {
+                    const optionBtn = document.createElement('div');
+                    optionBtn.className = 'quiz-option';
+                    optionBtn.id = 'opt-' + qIndex + '-' + oIndex;
+                    
+                    const indicator = document.createElement('div');
+                    indicator.className = 'w-6 h-6 rounded-full border-2 border-border flex items-center justify-center flex-shrink-0';
+                    indicator.id = 'ind-' + qIndex + '-' + oIndex;
+                    
+                    const textSpan = document.createElement('span');
+                    textSpan.className = 'text-[15px] leading-snug';
+                    textSpan.innerText = opt;
+                    
+                    optionBtn.appendChild(indicator);
+                    optionBtn.appendChild(textSpan);
+                    
+                    optionBtn.onclick = () => selectOption(qIndex, oIndex);
+                    
+                    optionsContainer.appendChild(optionBtn);
+                });
+                
+                card.appendChild(optionsContainer);
+                container.appendChild(card);
+            });
+        }
+
+        function selectOption(qIndex, oIndex) {
+            if (isSubmitted) return;
+            answers[qIndex] = oIndex;
+            updateSelectionUI(qIndex);
+        }
+
+        function updateSelectionUI(qIndex) {
+            quizData[qIndex].options.forEach((_, oIndex) => {
+                const btn = document.getElementById('opt-' + qIndex + '-' + oIndex);
+                const ind = document.getElementById('ind-' + qIndex + '-' + oIndex);
+                
+                if (answers[qIndex] === oIndex) {
+                    btn.classList.add('selected');
+                    ind.innerHTML = '<div class="w-3 h-3 rounded-full bg-brand"></div>';
+                    ind.classList.add('border-brand');
+                    ind.classList.remove('border-border');
+                } else {
+                    btn.classList.remove('selected');
+                    ind.innerHTML = '';
+                    ind.classList.remove('border-brand');
+                    ind.classList.add('border-border');
+                }
+            });
+        }
+
+        function submitQuiz() {
+            if (Object.keys(answers).length < quizData.length) {
+                alert("Por favor, selecciona una respuesta para todas las preguntas antes de enviar.");
+                return;
+            }
+            
+            isSubmitted = true;
+            document.getElementById('submit-quiz-btn').classList.add('hidden');
+            
+            let score = 0;
+            quizData.forEach((q, qIndex) => {
+                const isCorrect = answers[qIndex] === q.answer;
+                if (isCorrect) score++;
+                
+                const card = document.getElementById('q-card-' + qIndex);
+                const title = document.getElementById('q-title-' + qIndex);
+                
+                if (isCorrect) {
+                    card.classList.add('correct');
+                    title.classList.add('text-success');
+                    title.classList.remove('text-text');
+                } else {
+                    card.classList.add('incorrect');
+                    title.classList.add('text-error');
+                    title.classList.remove('text-text');
+                }
+                
+                q.options.forEach((_, oIndex) => {
+                    const btn = document.getElementById('opt-' + qIndex + '-' + oIndex);
+                    const ind = document.getElementById('ind-' + qIndex + '-' + oIndex);
+                    btn.classList.add('disabled');
+                    
+                    if (q.answer === oIndex) {
+                        btn.classList.add('correct');
+                        btn.classList.remove('selected');
+                        ind.innerHTML = '<i data-lucide="check" class="w-4 h-4 text-success"></i>';
+                        ind.classList.add('border-transparent');
+                        ind.classList.remove('border-brand', 'border-border');
+                    } else if (answers[qIndex] === oIndex && !isCorrect) {
+                        btn.classList.add('incorrect');
+                        btn.classList.remove('selected');
+                        ind.innerHTML = '<i data-lucide="x" class="w-4 h-4 text-error"></i>';
+                        ind.classList.add('border-transparent');
+                        ind.classList.remove('border-brand', 'border-border');
+                    } else {
+                        btn.style.opacity = '0.5';
+                    }
+                });
+            });
+            
+            lucide.createIcons();
+            
+            const resultsDiv = document.getElementById('quiz-results');
+            resultsDiv.classList.remove('hidden');
+            
+            const scoreText = document.getElementById('quiz-score-text');
+            const scoreSub = document.getElementById('quiz-score-sub');
+            const scoreMsg = document.getElementById('quiz-score-msg');
+            
+            let percentage = score * 10;
+            scoreText.innerText = percentage + "% de Aciertos";
+            scoreSub.innerText = score + " respuestas correctas de " + quizData.length + " posibles.";
+            
+            resultsDiv.className = 'p-10 rounded-2xl border-2 mt-8 text-center shadow-lg';
+            
+            if (score >= 8) {
+                resultsDiv.classList.add('bg-success-bg', 'border-success');
+                scoreText.classList.add('text-success');
+                scoreMsg.innerText = "¡Excelente trabajo! Has demostrado un conocimiento sólido de las herramientas y principios IA de Microsoft 365.";
+            } else if (score >= 5) {
+                resultsDiv.classList.add('bg-surface', 'border-border');
+                scoreText.classList.add('text-brand');
+                scoreMsg.innerText = "Buen desempeño general. Revisa las áreas marcadas en rojo para afinar tus conocimientos corporativos.";
+            } else {
+                resultsDiv.classList.add('bg-error-bg', 'border-error');
+                scoreText.classList.add('text-error');
+                scoreMsg.innerText = "Te recomendamos estudiar nuevamente la introducción y volver a realizar el test.";
+            }
+            
+            // Auto scroll a los resultados
+            setTimeout(() => {
+                resultsDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 300);
+        }
+
+        function resetQuiz() {
+            answers = {};
+            isSubmitted = false;
+            document.getElementById('submit-quiz-btn').classList.remove('hidden');
+            document.getElementById('quiz-results').classList.add('hidden');
+            renderQuiz();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Iniciar Quiz
+        renderQuiz();
+    </script>
+</body>
+</html>
